@@ -34,4 +34,51 @@ public class CardTest {
 
         assertEquals(anyRank, card.getRank());
     }
+
+    /**
+     * Verify that cards of the same rank are equal.
+     */
+    @Test
+    public void verifyRankEqualComparison() {
+        int anySuit = ThreadLocalRandom.current().nextInt();
+        int anyRank = ThreadLocalRandom.current().nextInt();
+        int otherSuit = ThreadLocalRandom.current().nextInt();
+
+        Card card = new Card(anySuit, anyRank);
+        Card equalCard = new Card(otherSuit, anyRank);
+
+        assertEquals(0, card.compareTo(equalCard));
+    }
+
+    /**
+     * Verify that compared with card of lower rank, a card indicates it is higher.
+     */
+    @Test
+    public void verifyLowerRankComparison() {
+        final int limit = 20;
+        int anySuit = ThreadLocalRandom.current().nextInt();
+        int anyRank = ThreadLocalRandom.current().nextInt(1, limit);
+        int otherSuit = ThreadLocalRandom.current().nextInt();
+
+        Card card = new Card(anySuit, anyRank);
+        Card lowerCard = new Card(otherSuit, anyRank - 1);
+
+        assertEquals(1, card.compareTo(lowerCard));
+    }
+
+    /**
+     * Verify that compared with card of higher rank, a card indicates it is lower.
+     */
+    @Test
+    public void verifyHigherRankComparison() {
+        final int limit = 20;
+        int anySuit = ThreadLocalRandom.current().nextInt();
+        int anyRank = ThreadLocalRandom.current().nextInt(1, limit);
+        int otherSuit = ThreadLocalRandom.current().nextInt();
+
+        Card card = new Card(anySuit, anyRank);
+        Card higherCard = new Card(otherSuit, anyRank + 1);
+
+        assertEquals(-1, card.compareTo(higherCard));
+    }
 }
