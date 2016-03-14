@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -96,6 +97,46 @@ public class SimplePlayerTest {
         }
 
         assertTrue(player.hasCards());
+    }
+
+    /**
+     * Verify that last played card is null before playing anything.
+     */
+    @Test
+    public void lastPlayedCardShouldBeNullBeforeAnyCardsAreDealt() {
+        assertNull("Last card should be null before any cards are played", player.getLastCard());
+    }
+
+    /**
+     * Verify that last card played is reset to null after all cards are played.
+     */
+    @Test
+    public void lastPlayedCardShouldBeNullAfterPlayingAllCards() {
+        Card card = new Card(0, 0);
+
+        player.receive(card);
+
+        assertSame(card, player.play());
+        assertSame(card, player.getLastCard());
+
+        assertNull(player.play());
+        assertNull(player.getLastCard());
+    }
+
+    /**
+     * Verify that last played card matches the card just played.
+     */
+    @Test
+    public void lastPlayedCardShouldMatchTheCardPlayedLast() {
+        Set<Card> cards = getRandomCards();
+
+        for (Card card : cards) {
+            player.receive(card);
+        }
+
+        while (player.hasCards()) {
+            assertSame(player.play(), player.getLastCard());
+        }
     }
 
     /**

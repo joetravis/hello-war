@@ -47,7 +47,7 @@ public class WarInRealLifeTest {
     @Test
     public void testLowerCardMatchesDontTriggerWarInRealLifeScenario() {
         final int limit = 20;
-        final int playerCount = ThreadLocalRandom.current().nextInt(limit);
+        final int playerCount = ThreadLocalRandom.current().nextInt(1, limit);
         Card highCard = new Card(0, ThreadLocalRandom.current().nextInt(limit));
         Player highPlayer = new SimplePlayer(0);
         highPlayer.receive(highCard);
@@ -77,7 +77,7 @@ public class WarInRealLifeTest {
     @Test
     public void highCardMatchTriggersWarWhereNoOneWins() {
         final int limit = 20;
-        final int playerCount = ThreadLocalRandom.current().nextInt(limit);
+        final int playerCount = ThreadLocalRandom.current().nextInt(1, limit);
         Card highCard = new Card(0, ThreadLocalRandom.current().nextInt(limit));
         Card otherHighCard = new Card(0, highCard.getRank());
         Player highPlayer = new SimplePlayer(0);

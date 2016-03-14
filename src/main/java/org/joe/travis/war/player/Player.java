@@ -14,9 +14,17 @@ public interface Player {
 
     /**
      * Player plays their next card.
+     *
      * @return the player's next card.
      */
     Card play();
+
+    /**
+     * Get the last card played by the player (their current face up card).
+     *
+     * @return last card played by player.
+     */
+    Card getLastCard();
 
     /**
      * Player receives a card and puts it in their "pile".
