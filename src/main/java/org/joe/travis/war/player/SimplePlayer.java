@@ -43,6 +43,9 @@ public class SimplePlayer implements Player {
 
     @Override
     public void receive(final Card card) {
+        if (card == null) {
+            return;
+        }
         cards.addLast(card);
     }
 

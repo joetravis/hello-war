@@ -54,6 +54,15 @@ public class SimplePlayerTest {
     }
 
     /**
+     * Verify that null values will not be added to the player's pile.
+     */
+    @Test
+    public void playerShouldntAcceptNullCards() {
+        player.receive(null);
+        assertFalse(player.hasCards());
+    }
+
+    /**
      * Verify that player can play cards after receiving them.
      */
     @Test
