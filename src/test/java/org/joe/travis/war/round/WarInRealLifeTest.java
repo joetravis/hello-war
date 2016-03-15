@@ -5,7 +5,6 @@ import org.joe.travis.war.player.Player;
 import org.joe.travis.war.player.SimplePlayer;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.ApplicationEventPublisher;
@@ -24,7 +23,6 @@ public class WarInRealLifeTest {
     /**
      * Subject under test.
      */
-    @InjectMocks
     private WarInRealLife round;
 
     /**
@@ -34,18 +32,33 @@ public class WarInRealLifeTest {
     private ApplicationEventPublisher eventPublisher;
 
     /**
+     * Round ID.
+     */
+    private int id;
+
+    /**
      * Initialize subject under test and test fixtures.
      */
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        id = ThreadLocalRandom.current().nextInt();
+        round = new WarInRealLife(id, eventPublisher);
+    }
+
+    /**
+     * Verify that id is stored.
+     */
+    @Test
+    public void idShouldBeStored() {
+        assertEquals(id, round.getId());
     }
 
     /**
      * Verify that high card wins even when lower cards are tied.
      */
     @Test
-    public void testLowerCardMatchesDontTriggerWarInRealLifeScenario() {
+    public void lowerCardMatchesDontTriggerWarInRealLifeScenario() {
         final int limit = 20;
         final int playerCount = ThreadLocalRandom.current().nextInt(1, limit);
         Card highCard = new Card(0, ThreadLocalRandom.current().nextInt(limit));

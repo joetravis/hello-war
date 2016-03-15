@@ -10,14 +10,14 @@ import java.util.List;
 /**
  * For those with a poetic bent, nobody wins at war.
  */
-public class WarInRealLife implements Round {
+public class WarInRealLife extends AbstractRound implements Round {
     /**
      * Create a round where war has no winners.
-     *
+     * @param id for the round.
      * @param eventPublisher to publish round events with.
      */
-    public WarInRealLife(final ApplicationEventPublisher eventPublisher) {
-
+    public WarInRealLife(final int id, final ApplicationEventPublisher eventPublisher) {
+        super(id, eventPublisher);
     }
 
     //TODO need to account for no players, null players

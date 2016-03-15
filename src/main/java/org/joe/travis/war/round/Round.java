@@ -13,4 +13,10 @@ public interface Round {
      * @param players to include in the round of war.
      */
     void play(Collection<Player> players);
+
+    /**
+     * Get the Round ID.
+     * @return ID.
+     */
+    int getId();
 }
