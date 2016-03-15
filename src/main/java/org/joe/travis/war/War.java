@@ -65,7 +65,7 @@ public class War {
      * @param numberOfPlayers to play the game with.
      */
     public void play(final int numberOfSuits, final int numberOfRanks, final int numberOfPlayers) {
-        final int mercyRuleLimit = 10000;
+        final int mercyRuleLimit = 500000;
         eventPublisher.publishEvent(new WarStartedEvent(numberOfSuits, numberOfRanks, numberOfPlayers));
         if (numberOfPlayers < 2) {
             return;
