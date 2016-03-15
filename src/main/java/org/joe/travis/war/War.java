@@ -7,6 +7,8 @@ import org.joe.travis.war.player.Player;
 import org.joe.travis.war.player.SimplePlayer;
 import org.joe.travis.war.round.Round;
 import org.joe.travis.war.round.RoundGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,11 @@ import java.util.Collection;
  */
 @Service
 public class War {
+    /**
+     * Logger instance.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(War.class);
+
     /**
      * Event publisher for publishing war events.
      */
@@ -58,11 +65,13 @@ public class War {
      * @param numberOfPlayers to play the game with.
      */
     public void play(final int numberOfSuits, final int numberOfRanks, final int numberOfPlayers) {
+        final int mercyRuleLimit = 10000;
         eventPublisher.publishEvent(new WarStartedEvent(numberOfSuits, numberOfRanks, numberOfPlayers));
         if (numberOfPlayers < 2) {
             return;
         }
 
+        LOGGER.debug("Creating {} players.", numberOfPlayers);
         Collection<Player> players = createPlayers(numberOfPlayers);
         deck.create(numberOfSuits, numberOfRanks);
         deck.shuffle();
@@ -76,9 +85,16 @@ public class War {
             Round round = roundGenerator.getNextRound();
             round.play(contenders);
             contenders = getContenders(players);
+            if (round.getId() > mercyRuleLimit) {
+                eventPublisher.publishEvent(
+                        new WarFinishedEvent("Are you really still playing? I'm invoking the mercy rule."
+                        )
+                );
+                return;
+            }
         }
 
-        eventPublisher.publishEvent(new WarFinishedEvent());
+        eventPublisher.publishEvent(new WarFinishedEvent(contenders));
     }
 
     /**

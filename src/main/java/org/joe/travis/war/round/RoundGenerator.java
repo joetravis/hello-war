@@ -10,15 +10,31 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoundGenerator {
     /**
+     * Counter for giving rounds ids.
+     */
+    private int counter;
+
+    /**
+     * Event publisher to pass to created rounds.
+     */
+    private final ApplicationEventPublisher eventPublisher;
+
+    /**
      * Round generator needs an event publisher to pass to created rounds.
      * @param eventPublisher to pass to created rounds.
      */
     @Autowired
     public RoundGenerator(final ApplicationEventPublisher eventPublisher) {
-
+        this.counter = 0;
+        this.eventPublisher = eventPublisher;
     }
 
+    /**
+     * Generate a new round.
+     * @return next round.
+     */
     public Round getNextRound() {
-        return null;
+        counter++;
+        return new WarInRealLife(counter, eventPublisher);
     }
 }

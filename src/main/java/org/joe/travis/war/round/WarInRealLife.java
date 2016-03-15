@@ -1,6 +1,10 @@
 package org.joe.travis.war.round;
 
+import org.joe.travis.war.deck.Card;
 import org.joe.travis.war.player.Player;
+import org.joe.travis.war.round.event.CardPlayedEvent;
+import org.joe.travis.war.round.event.RoundCompleteEvent;
+import org.joe.travis.war.round.event.RoundStartedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.ArrayList;
@@ -20,22 +24,47 @@ public class WarInRealLife extends AbstractRound implements Round {
         super(id, eventPublisher);
     }
 
-    //TODO need to account for no players, null players
     @Override
     public void play(final Collection<Player> players) {
-        for (Player player : players) {
-            player.play();
+        getEventPublisher().publishEvent(new RoundStartedEvent(this, players));
+        if (players == null) {
+            return;
         }
+
+        playARound(players);
 
         List<Player> winningPlayers = getWinners(players);
 
         //no one wins if high card match triggers war condition.
         if (winningPlayers.size() > 1) {
+            winningPlayers.clear();
+            getEventPublisher().publishEvent(
+                    new RoundCompleteEvent(
+                            this,
+                            winningPlayers,
+                            "In war there are no winners. The spoils of war are lost."
+                    )
+            );
             return;
         }
 
         for (Player player : players) {
             winningPlayers.get(0).receive(player.getLastCard());
+        }
+
+        getEventPublisher().publishEvent(new RoundCompleteEvent(this, winningPlayers));
+    }
+
+    /**
+     * Let the players play a round.
+     * @param players to play this round.
+     */
+    private void playARound(final Collection<Player> players) {
+        for (Player player : players) {
+            Card card = player.play();
+            if (card != null) {
+                getEventPublisher().publishEvent(new CardPlayedEvent(player, card));
+            }
         }
     }
 

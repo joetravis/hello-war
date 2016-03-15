@@ -7,12 +7,14 @@ import org.joe.travis.war.deck.SimpleDeck;
 import org.joe.travis.war.deck.shuffler.FisherYatesShuffler;
 import org.joe.travis.war.deck.shuffler.Shuffler;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * Bean config for war.
  */
 @Configuration
+@ComponentScan("org.joe.travis")
 public class WarConfig {
     /**
      * @return Options for the command line parser.

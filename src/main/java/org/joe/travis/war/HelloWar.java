@@ -7,7 +7,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * Main driver for the war simulator.
@@ -26,7 +26,7 @@ public final class HelloWar {
      * @param args for the program.
      */
     public static void main(final String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
+        ApplicationContext context = new AnnotationConfigApplicationContext(WarConfig.class);
         int numberOfSuits;
         int numberOfRanks;
         int numberOfPlayers;
