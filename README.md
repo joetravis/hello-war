@@ -22,7 +22,7 @@ This project relies on Maven to build and run tests. If you would like to play t
 Once you have a HelloWar.jar you can run it as follows:
 
 ```
-java -jar HelloWar.jar -suits 4 -ranks 13 -players 2
+java -jar HelloWar.jar --suits 4 --ranks 13 --players 2
 ```
 
 Where:
