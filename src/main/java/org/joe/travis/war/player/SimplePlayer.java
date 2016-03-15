@@ -19,6 +19,11 @@ public class SimplePlayer implements Player {
     private final LinkedList<Card> cards;
 
     /**
+     * Card just played by the player.
+     */
+    private Card playedCard;
+
+    /**
      * Players need an identifier.
      * @param id player ID.
      */
@@ -35,14 +40,25 @@ public class SimplePlayer implements Player {
     @Override
     public Card play() {
         if (cards.isEmpty()) {
+            playedCard = null;
             return null;
         }
 
-        return cards.removeFirst();
+        playedCard = cards.removeFirst();
+
+        return playedCard;
+    }
+
+    @Override
+    public Card getLastCard() {
+        return playedCard;
     }
 
     @Override
     public void receive(final Card card) {
+        if (card == null) {
+            return;
+        }
         cards.addLast(card);
     }
 
