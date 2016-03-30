@@ -41,11 +41,11 @@ public class Card implements Comparable<Card> {
 
     @Override
     public int compareTo(final Card otherCard) {
+        if (otherCard == null || otherCard.getRank() < getRank()) {
+            return 1;
+        }
         if (otherCard.getRank() > getRank()) {
             return -1;
-        }
-        if (otherCard.getRank() < getRank()) {
-            return 1;
         }
         return 0;
     }

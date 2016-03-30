@@ -1,5 +1,6 @@
 package org.joe.travis.war.round;
 
+import org.joe.travis.war.deck.Card;
 import org.joe.travis.war.player.Player;
 import org.joe.travis.war.round.event.RoundCompleteEvent;
 import org.joe.travis.war.round.event.RoundStartedEvent;
@@ -9,15 +10,15 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * For those with a poetic bent, nobody wins at war.
+ * Represents a traditional round of war. War scenario triggers a war round.
  */
-public class WarInRealLife extends AbstractRound implements Round {
+public class TraditionalRound extends AbstractRound implements Round {
     /**
      * Create a round where war has no winners.
      * @param id for the round.
      * @param eventPublisher to publish round events with.
      */
-    public WarInRealLife(final int id, final ApplicationEventPublisher eventPublisher) {
+    public TraditionalRound(final int id, final ApplicationEventPublisher eventPublisher) {
         super(id, eventPublisher);
     }
 
@@ -28,28 +29,19 @@ public class WarInRealLife extends AbstractRound implements Round {
             return;
         }
 
-        playARound(players);
+        Collection<Card> pot = playARound(players);
 
         List<Player> winningPlayers = getWinners(players);
 
-        //no one wins if high card match triggers war condition.
+        //If there are multiple winners, then winnow them down until there is only one.
         if (winningPlayers.size() > 1) {
-            winningPlayers.clear();
-            getEventPublisher().publishEvent(
-                    new RoundCompleteEvent(
-                            this,
-                            winningPlayers,
-                            "In war there are no winners. The spoils of war are lost."
-                    )
-            );
-            return;
+            getRoundGenerator().getWarRound(this).play(winningPlayers);
         }
 
-        for (Player player : players) {
-            winningPlayers.get(0).receive(player.getLastCard());
+        for (Card card : pot) {
+            winningPlayers.get(0).receive(card);
         }
 
         getEventPublisher().publishEvent(new RoundCompleteEvent(this, winningPlayers));
     }
-
 }

@@ -1,5 +1,6 @@
 package org.joe.travis.war.round;
 
+import org.joe.travis.war.round.war.TraditionalWarRound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,16 @@ public class RoundGenerator {
      */
     public Round getNextRound() {
         counter++;
-        return new WarInRealLife(counter, eventPublisher);
+        return new WarInRealLife(counter, eventPublisher).setRoundGenerator(this);
+    }
+
+    /**
+     * Get the appropriate round of war.
+     * @param round that spawned the war round.
+     * @return new war round.
+     */
+    public Round getWarRound(final Round round) {
+        counter++;
+        return new TraditionalWarRound(counter, eventPublisher).setRoundGenerator(this);
     }
 }
