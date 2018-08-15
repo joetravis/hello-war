@@ -30,6 +30,7 @@ public final class HelloWar {
         int numberOfSuits;
         int numberOfRanks;
         int numberOfPlayers;
+        int maxRounds = 10000;
 
         CommandLineParser parser = new DefaultParser();
         try {
@@ -44,6 +45,9 @@ public final class HelloWar {
             numberOfSuits = getCommandLineArgument(line, "suits", 1);
             numberOfRanks = getCommandLineArgument(line, "ranks", 1);
             numberOfPlayers = getCommandLineArgument(line, "players", 2);
+            if (line.hasOption("maxRounds")) {
+                maxRounds = getCommandLineArgument(line, "maxRounds", 1);
+            }
         } catch (IllegalArgumentException e) {
             System.err.println("Invalid arguments provided: " + e.getMessage());
             return;
@@ -53,7 +57,7 @@ public final class HelloWar {
         }
 
         War war = context.getBean(War.class);
-        war.play(numberOfSuits, numberOfRanks, numberOfPlayers);
+        war.play(numberOfSuits, numberOfRanks, numberOfPlayers, maxRounds);
     }
 
     /**

@@ -39,4 +39,6 @@ public interface Player {
      * @return true if the player still has cards.
      */
     boolean hasCards();
+
+    int getCardCount();
 }

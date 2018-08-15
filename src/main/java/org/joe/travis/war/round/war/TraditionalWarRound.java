@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 /**
  * Represents a war round in a traditional war game.
  */
-public class TraditionalWarRound extends AbstractRound implements Round {
+public class TraditionalWarRound extends AbstractWarRound implements WarRound {
     /**
      * War round for a traditional game of war.
      * @param id round id.
      * @param eventPublisher to publish events to.
      */
-    public TraditionalWarRound(final int id, final ApplicationEventPublisher eventPublisher) {
-        super(id, eventPublisher);
+    public TraditionalWarRound(final int id, final ApplicationEventPublisher eventPublisher, Round parentRound) {
+        super(id, eventPublisher, parentRound);
     }
 
     @Override
@@ -30,7 +30,6 @@ public class TraditionalWarRound extends AbstractRound implements Round {
         getEventPublisher().publishEvent(new RoundStartedEvent(this, players));
 
         Collection<Card> pot = playARound(players);
-        pot.addAll(playARound(players));
         pot.addAll(playARound(players));
 
         List<Player> winners = getWinners(players);

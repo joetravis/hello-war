@@ -17,13 +17,15 @@ public class RoundReporter {
      */
     @EventListener
     public void onCardPlayed(final CardPlayedEvent cardPlayedEvent) {
+        StringBuilder builder = new StringBuilder();
         System.out.println(
-                String.format(
-                        "-Player %d plays card rank %d, suit %d",
-                        cardPlayedEvent.getPlayer().getId(),
-                        cardPlayedEvent.getCard().getRank(),
-                        cardPlayedEvent.getCard().getSuit()
-                )
+                builder.append("-Player ")
+                    .append(cardPlayedEvent.getPlayer().getId())
+                    .append(" plays card rank ")
+                    .append(cardPlayedEvent.getCard().getRank())
+                    .append(", suit ")
+                    .append(cardPlayedEvent.getCard().getSuit())
+                    .toString()
         );
     }
 
@@ -33,12 +35,12 @@ public class RoundReporter {
      */
     @EventListener
     public void onRoundStarted(final RoundStartedEvent roundStartedEvent) {
+        StringBuilder builder = new StringBuilder();
         System.out.println(
-                String.format(
-                        "Round %d begins with %s",
-                        roundStartedEvent.getRound().getId(),
-                        PlayerFormatter.formatPlayers(roundStartedEvent.getPlayers())
-                )
+                builder.append(RoundFormatter.formatRound(roundStartedEvent.getRound()))
+                    .append(" begins with ")
+                    .append(PlayerFormatter.formatPlayers(roundStartedEvent.getPlayers()))
+                    .toString()
         );
     }
 
@@ -57,27 +59,28 @@ public class RoundReporter {
      * @return formatted message.
      */
     private String getRoundCompleteMessage(final RoundCompleteEvent roundCompleteEvent) {
+        StringBuilder builder = new StringBuilder();
+        String formattedRound = RoundFormatter.formatRound(roundCompleteEvent.getRound());
+
         if (roundCompleteEvent.getMessage() == null) {
-            return String.format(
-                    "Round %d ends with winner: %s",
-                    roundCompleteEvent.getRound().getId(),
-                    PlayerFormatter.formatPlayers(roundCompleteEvent.getWinners())
-            );
+            return builder.append(formattedRound)
+                    .append(" ends with winner: ")
+                    .append(PlayerFormatter.formatPlayers(roundCompleteEvent.getWinners()))
+                    .toString();
         }
 
         if (roundCompleteEvent.getWinners().size() == 0) {
-            return String.format(
-                    "Round %d ends with no winners. %s",
-                    roundCompleteEvent.getRound().getId(),
-                    roundCompleteEvent.getMessage()
-            );
+            return builder.append(formattedRound)
+                    .append(" ends with no winners. ")
+                    .append(roundCompleteEvent.getMessage())
+                    .toString();
         }
 
-        return String.format(
-                "Round %d ends with winner: %s. %s",
-                roundCompleteEvent.getRound().getId(),
-                PlayerFormatter.formatPlayers(roundCompleteEvent.getWinners()),
-                roundCompleteEvent.getMessage()
-        );
+        return builder.append(formattedRound)
+                .append(" ends with winner: ")
+                .append(PlayerFormatter.formatPlayers(roundCompleteEvent.getWinners()))
+                .append(". ")
+                .append(roundCompleteEvent.getMessage())
+                .toString();
     }
 }

@@ -13,7 +13,9 @@ public class RoundGenerator {
     /**
      * Counter for giving rounds ids.
      */
-    private int counter;
+    private int roundCounter;
+
+    private int warRoundCounter;
 
     /**
      * Event publisher to pass to created rounds.
@@ -26,7 +28,7 @@ public class RoundGenerator {
      */
     @Autowired
     public RoundGenerator(final ApplicationEventPublisher eventPublisher) {
-        this.counter = 0;
+        this.roundCounter = 0;
         this.eventPublisher = eventPublisher;
     }
 
@@ -35,8 +37,9 @@ public class RoundGenerator {
      * @return next round.
      */
     public Round getNextRound() {
-        counter++;
-        return new WarInRealLife(counter, eventPublisher).setRoundGenerator(this);
+        roundCounter++;
+        warRoundCounter = 0;
+        return new TraditionalRound(roundCounter, eventPublisher).setRoundGenerator(this);
     }
 
     /**
@@ -45,7 +48,7 @@ public class RoundGenerator {
      * @return new war round.
      */
     public Round getWarRound(final Round round) {
-        counter++;
-        return new TraditionalWarRound(counter, eventPublisher).setRoundGenerator(this);
+        warRoundCounter++;
+        return new TraditionalWarRound(warRoundCounter, eventPublisher, round).setRoundGenerator(this);
     }
 }

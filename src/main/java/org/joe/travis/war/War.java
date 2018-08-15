@@ -64,8 +64,7 @@ public class War {
      * @param numberOfRanks to include per suit.
      * @param numberOfPlayers to play the game with.
      */
-    public void play(final int numberOfSuits, final int numberOfRanks, final int numberOfPlayers) {
-        final int mercyRuleLimit = 500000;
+    public void play(final int numberOfSuits, final int numberOfRanks, final int numberOfPlayers, final int maxRounds) {
         eventPublisher.publishEvent(new WarStartedEvent(numberOfSuits, numberOfRanks, numberOfPlayers));
         if (numberOfPlayers < 2) {
             return;
@@ -85,7 +84,7 @@ public class War {
             Round round = roundGenerator.getNextRound();
             round.play(contenders);
             contenders = getContenders(players);
-            if (round.getId() > mercyRuleLimit) {
+            if (round.getId() > maxRounds) {
                 eventPublisher.publishEvent(
                         new WarFinishedEvent("Are you really still playing? I'm invoking the mercy rule."
                         )

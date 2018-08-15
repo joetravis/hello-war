@@ -3,6 +3,7 @@ package org.joe.travis.war.round.war;
 import org.joe.travis.war.deck.Card;
 import org.joe.travis.war.player.Player;
 import org.joe.travis.war.player.SimplePlayer;
+import org.joe.travis.war.round.Round;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -32,6 +33,9 @@ public class TraditionalWarRoundTest {
     @Mock
     private ApplicationEventPublisher publisher;
 
+    @Mock
+    private Round parentRound;
+
     /**
      * Player to take the role of winner in tests.
      */
@@ -53,7 +57,7 @@ public class TraditionalWarRoundTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        round = new TraditionalWarRound(ThreadLocalRandom.current().nextInt(), publisher);
+        round = new TraditionalWarRound(ThreadLocalRandom.current().nextInt(), publisher, parentRound);
         winner = new SimplePlayer(ThreadLocalRandom.current().nextInt());
         loser = new SimplePlayer(ThreadLocalRandom.current().nextInt());
         players = new ArrayList<>();

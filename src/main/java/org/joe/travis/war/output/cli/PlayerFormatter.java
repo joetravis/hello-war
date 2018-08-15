@@ -8,6 +8,9 @@ import java.util.Collection;
  * Formats a collection of players into a readable format.
  */
 public final class PlayerFormatter {
+
+    private static StringBuilder builder = new StringBuilder();;
+
     /**
      * No public constructor for utility classes.
      */
@@ -25,7 +28,7 @@ public final class PlayerFormatter {
             return "";
         }
 
-        StringBuilder builder = new StringBuilder();
+        builder.setLength(0);
 
         for (Player player : players) {
             builder.append("player ")

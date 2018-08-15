@@ -16,12 +16,14 @@ public class WarReporter  {
      */
     @EventListener
     public void onWarStarted(final WarStartedEvent warStartedEvent) {
+        StringBuilder builder = new StringBuilder();
         System.out.println(
-                String.format(
-                        "Starting a game of war with %d players, and %d cards.",
-                        warStartedEvent.getNumPlayers(),
-                        warStartedEvent.getNumRanks() * warStartedEvent.getNumSuits()
-                )
+                builder.append("Starting a game of war with ")
+                .append(warStartedEvent.getNumPlayers())
+                .append(" players, and ")
+                .append(warStartedEvent.getNumRanks() * warStartedEvent.getNumSuits())
+                .append(" cards.")
+                .toString()
         );
     }
 
@@ -40,11 +42,11 @@ public class WarReporter  {
      * @return custom message.
      */
     private String getWarFinishedMessage(final WarFinishedEvent warFinishedEvent) {
+        StringBuilder builder = new StringBuilder();
         if (warFinishedEvent.getMessage() != null) {
-            return String.format(
-                    "This war is over. %s",
-                    warFinishedEvent.getMessage()
-            );
+            return builder.append("This war is over. ")
+                    .append(warFinishedEvent.getMessage())
+                    .toString();
         }
 
         if (warFinishedEvent.getWinners().size() == 0) {
@@ -52,15 +54,13 @@ public class WarReporter  {
         }
 
         if (warFinishedEvent.getWinners().size() == 1) {
-            return String.format(
-                    "We have a winner: %s",
-                    PlayerFormatter.formatPlayers(warFinishedEvent.getWinners())
-            );
+            return builder.append("We have a winner: ")
+                    .append(PlayerFormatter.formatPlayers(warFinishedEvent.getWinners()))
+                    .toString();
         }
 
-        return String.format(
-                "We have multiple winners: %s",
-                PlayerFormatter.formatPlayers(warFinishedEvent.getWinners())
-        );
+        return builder.append("We have multiple winners: ")
+                .append(PlayerFormatter.formatPlayers(warFinishedEvent.getWinners()))
+                .toString();
     }
 }
