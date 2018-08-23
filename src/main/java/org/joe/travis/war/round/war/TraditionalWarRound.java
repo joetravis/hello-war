@@ -2,7 +2,6 @@ package org.joe.travis.war.round.war;
 
 import org.joe.travis.war.deck.Card;
 import org.joe.travis.war.player.Player;
-import org.joe.travis.war.round.AbstractRound;
 import org.joe.travis.war.round.Round;
 import org.joe.travis.war.round.event.RoundCompleteEvent;
 import org.joe.travis.war.round.event.RoundStartedEvent;
@@ -20,8 +19,9 @@ public class TraditionalWarRound extends AbstractWarRound implements WarRound {
      * War round for a traditional game of war.
      * @param id round id.
      * @param eventPublisher to publish events to.
+     * @param parentRound that spawned the war round.
      */
-    public TraditionalWarRound(final int id, final ApplicationEventPublisher eventPublisher, Round parentRound) {
+    public TraditionalWarRound(final int id, final ApplicationEventPublisher eventPublisher, final Round parentRound) {
         super(id, eventPublisher, parentRound);
     }
 

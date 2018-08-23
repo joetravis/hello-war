@@ -39,8 +39,8 @@ public class RoundGeneratorTest {
      * For now the only round type is war in real life.
      */
     @Test
-    public void getNextRoundShouldReturnWarInRealLifeRounds() {
-        assertThat(roundGenerator.getNextRound(), instanceOf(WarInRealLife.class));
+    public void getNextRoundShouldReturnTraditionalWarRound() {
+        assertThat(roundGenerator.getNextRound(), instanceOf(TraditionalRound.class));
     }
 
     /**
