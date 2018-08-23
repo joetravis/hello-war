@@ -4,6 +4,7 @@ import org.joe.travis.war.deck.Card;
 import org.joe.travis.war.player.Player;
 import org.joe.travis.war.player.SimplePlayer;
 import org.joe.travis.war.round.Round;
+import org.joe.travis.war.round.RoundGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -33,6 +34,9 @@ public class TraditionalWarRoundTest {
     @Mock
     private ApplicationEventPublisher publisher;
 
+    /**
+     * A parent round for the War Round.
+     */
     @Mock
     private Round parentRound;
 
@@ -58,6 +62,7 @@ public class TraditionalWarRoundTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         round = new TraditionalWarRound(ThreadLocalRandom.current().nextInt(), publisher, parentRound);
+        round.setRoundGenerator(new RoundGenerator(publisher));
         winner = new SimplePlayer(ThreadLocalRandom.current().nextInt());
         loser = new SimplePlayer(ThreadLocalRandom.current().nextInt());
         players = new ArrayList<>();
@@ -69,12 +74,12 @@ public class TraditionalWarRoundTest {
      * Verify the normal functioning of the war round.
      */
     @Test
-    public void playShouldSpendTwoCardsAndDecideWinnerOnThirdCard() {
+    public void playShouldSpendOneCardAndDecideWinnerOnSecondCard() {
         Integer lowRank = ThreadLocalRandom.current().nextInt();
         Card lowCard = new Card(ThreadLocalRandom.current().nextInt(), lowRank);
         Card highCard = new Card(ThreadLocalRandom.current().nextInt(), lowRank + 1);
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
             loser.receive(lowCard);
             winner.receive(lowCard);
         }

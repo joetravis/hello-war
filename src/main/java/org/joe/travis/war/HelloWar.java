@@ -13,6 +13,12 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * Main driver for the war simulator.
  */
 public final class HelloWar {
+
+    /**
+     * Default value for max number of rounds before ceasing play.
+     */
+    public static final int MAX_ROUNDS = 10000;
+
     /**
      * No need to construct HelloWar when only static main is present.
      */
@@ -30,7 +36,7 @@ public final class HelloWar {
         int numberOfSuits;
         int numberOfRanks;
         int numberOfPlayers;
-        int maxRounds = 10000;
+        int maxRounds = MAX_ROUNDS;
 
         CommandLineParser parser = new DefaultParser();
         try {

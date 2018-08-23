@@ -63,6 +63,7 @@ public class War {
      * @param numberOfSuits to include in the deck.
      * @param numberOfRanks to include per suit.
      * @param numberOfPlayers to play the game with.
+     * @param maxRounds before game is called off.
      */
     public void play(final int numberOfSuits, final int numberOfRanks, final int numberOfPlayers, final int maxRounds) {
         eventPublisher.publishEvent(new WarStartedEvent(numberOfSuits, numberOfRanks, numberOfPlayers));

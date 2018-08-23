@@ -8,8 +8,10 @@ import java.util.Collection;
  * Formats a collection of players into a readable format.
  */
 public final class PlayerFormatter {
-
-    private static StringBuilder builder = new StringBuilder();;
+    /**
+     * String builder for providing player formatted strings.
+     */
+    private static StringBuilder builder = new StringBuilder();
 
     /**
      * No public constructor for utility classes.

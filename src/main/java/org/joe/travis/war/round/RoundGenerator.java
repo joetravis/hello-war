@@ -11,10 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoundGenerator {
     /**
-     * Counter for giving rounds ids.
+     * Counter for giving rounds IDs.
      */
     private int roundCounter;
 
+    /**
+     * Counter for indicating the war round ID within a round.
+     */
     private int warRoundCounter;
 
     /**

@@ -66,9 +66,4 @@ public class SimplePlayer implements Player {
     public boolean hasCards() {
         return !cards.isEmpty();
     }
-
-    @Override
-    public int getCardCount() {
-        return cards.size();
-    }
 }
