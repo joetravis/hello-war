@@ -1,4 +1,5 @@
 # HelloWar
+[![Build Status](https://travis-ci.org/joetravis/hello-war.svg?branch=master)](https://travis-ci.org/joetravis/hello-war)
 
 A War (card game) simulator. Currently the simulator allows you to choose the number of suits
 and ranks per suit to allow for custom decks. It also allows you to choose the number of players.
