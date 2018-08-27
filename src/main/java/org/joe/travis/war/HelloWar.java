@@ -17,7 +17,7 @@ public final class HelloWar {
     /**
      * Default value for max number of rounds before ceasing play.
      */
-    public static final int MAX_ROUNDS = 10000;
+    public static final int MAX_ROUNDS_DEFAULT = 10000;
 
     /**
      * No need to construct HelloWar when only static main is present.
@@ -36,34 +36,50 @@ public final class HelloWar {
         int numberOfSuits;
         int numberOfRanks;
         int numberOfPlayers;
-        int maxRounds = MAX_ROUNDS;
+        int maxRounds;
 
         CommandLineParser parser = new DefaultParser();
+        Options commandLineOptions = context.getBean(Options.class);
+        CommandLine line;
+
         try {
-            Options commandLineOptions = context.getBean(Options.class);
             // parse the command line arguments
-            CommandLine line = parser.parse(commandLineOptions, args);
-            if (line.hasOption("help")) {
-                HelpFormatter formatter = new HelpFormatter();
-                formatter.printHelp("java HelloWar.jar", commandLineOptions);
-                return;
-            }
+            line = parser.parse(commandLineOptions, args);
+        }  catch (ParseException e) {
+            System.err.println("Parsing failed.  Reason: " + e.getMessage());
+            return;
+        }
+
+        if (line.hasOption("help")) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("java HelloWar.jar", commandLineOptions);
+            return;
+        }
+
+        try {
             numberOfSuits = getCommandLineArgument(line, "suits", 1);
             numberOfRanks = getCommandLineArgument(line, "ranks", 1);
             numberOfPlayers = getCommandLineArgument(line, "players", 2);
-            if (line.hasOption("maxRounds")) {
-                maxRounds = getCommandLineArgument(line, "maxRounds", 1);
-            }
+            maxRounds = getMaxRoundsToPlay(line);
         } catch (IllegalArgumentException e) {
             System.err.println("Invalid arguments provided: " + e.getMessage());
-            return;
-        } catch (ParseException e) {
-            System.err.println("Parsing failed.  Reason: " + e.getMessage());
             return;
         }
 
         War war = context.getBean(War.class);
         war.play(numberOfSuits, numberOfRanks, numberOfPlayers, maxRounds);
+    }
+
+    /**
+     * Get the max number of rounds to play from argument or default.
+     * @param line CommandLine to pull arg from.
+     * @return max rounds to play.
+     */
+    private static int getMaxRoundsToPlay(final CommandLine line) {
+        if (!line.hasOption("maxRounds")) {
+            return MAX_ROUNDS_DEFAULT;
+        }
+        return getCommandLineArgument(line, "maxRounds", 1);
     }
 
     /**

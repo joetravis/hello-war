@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.IntFunction;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Driver for the game of war.
@@ -87,8 +89,7 @@ public class War {
             contenders = getContenders(players);
             if (round.getId() > maxRounds) {
                 eventPublisher.publishEvent(
-                        new WarFinishedEvent("Are you really still playing? I'm invoking the mercy rule."
-                        )
+                        new WarFinishedEvent("Are you really still playing? I'm invoking the mercy rule.")
                 );
                 return;
             }
@@ -103,13 +104,10 @@ public class War {
      * @return a collection of players.
      */
     private Collection<Player> createPlayers(final int numberOfPlayers) {
-        Collection<Player> players = new ArrayList<>(numberOfPlayers);
+        return IntStream.range(0, numberOfPlayers)
+                .mapToObj((IntFunction<Player>) SimplePlayer::new)
+                .collect(Collectors.toList());
 
-        for (int i = 0; i < numberOfPlayers; i++) {
-            players.add(new SimplePlayer(i));
-        }
-
-        return players;
     }
 
     /**
@@ -118,14 +116,8 @@ public class War {
      * @return list of contenders.
      */
     private Collection<Player> getContenders(final Collection<Player> players) {
-        Collection<Player> contenders = new ArrayList<>(players.size());
-
-        for (Player player : players) {
-            if (player.hasCards()) {
-                contenders.add(player);
-            }
-        }
-
-        return contenders;
+        return players.stream()
+                .filter(Player::hasCards)
+                .collect(Collectors.toList());
     }
 }
